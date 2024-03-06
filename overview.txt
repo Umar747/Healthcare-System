@@ -1,0 +1,19 @@
+Potential page: login page
+
+Data stored:
+Patient id
+Name
+Date of birth
+Address
+Ethnicity
+Blood type
+Existing conditions
+Medications that the need
+
+Database:
+We should be able to add and delete patient data, as well as make edits on these stored data.
+
+Search system:
+Search via patient id
+Search via name
+Search via date of birth
