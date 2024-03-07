@@ -19,7 +19,7 @@ const pool = new Pool({
 
 _dirname = path.resolve();
 
-app.set('view engine', 'ejs');
+// app.set('view engine', 'ejs');
 
 app.use(cors());
 app.use(express.json());
@@ -35,6 +35,10 @@ async function run() {
       res.send('Something went wrong. Please try again. ');
       });
     next();
+  });
+
+  app.get('/', async function(req, res) {
+    res.sendFile(path.join(_dirname, '/public/views/home.html'));
   });
   
   app.listen(port, function() {

@@ -1,6 +1,6 @@
 Potential page: login page
 
-Data stored:
+Patient data stored:
 Patient id
 Name
 Date of birth
@@ -9,6 +9,12 @@ Ethnicity
 Blood type
 Existing conditions
 Medications that the need
+
+Doctor data stored:
+username
+password
+
+Send data in JSON format - send all patient data in one go
 
 Database:
 We should be able to add and delete patient data, as well as make edits on these stored data.
