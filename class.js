@@ -168,13 +168,47 @@ async function patientbyid (id) {
     }
 }
 
+async function allpatients() {
+    const client = await pool.connect();
+    try {
+        try {
+            let res = await client.query('SELECT * FROM patients');
+            // console.log(res.rows);
+            return res.rows;
+            // let name = res.rows[0].name;
+            // let dob = res.rows[0].dob;
+            // // let dob = String(res.rows[0].dob).substring()// Only want the date, not the time
+            // // console.log(dob)
+            // // console.log(String(dob))
+            // let address = res.rows[0].address;
+            // let ethnicity = res.rows[0].ethnicity;
+            // let bloodType = res.rows[0].bloodtype;
+            // let conditions = res.rows[0].conditions;
+            // let medication = res.rows[0].medication;
+            // let patient = new Patient(id, name, dob, address, ethnicity, bloodType, conditions, medication);
+            // return patient;
+        } finally {
+            client.release();
+        }
+    } catch (err) {
+        if (err.name == 'TypeError' & err.message == `Cannot read properties of undefined (reading 'name')`) {
+            console.log('Invalid id');
+            return false;
+        } else {
+            console.log('Something unknown went wrong with the patientbyid function');
+            console.log(err.stack);
+        }
+    }
+}
+
 async function run () {
     const client = await pool.connect();
     try {
         try {
             // createPatient('Anonymous Person', '07/31/2003', '125 Fake Street', 'Caucasian', 'O-', ['Coronavirus'], ['Pfizer']);
-            let user = await patientbyid(1);
-            console.log(user);
+            // let user = await patientbyid(1);
+            // console.log(user);
+            await allpatients();
         } finally {
             client.release();
         }
@@ -186,4 +220,4 @@ async function run () {
 
 // run()
 
-module.exports = {}
+module.exports = {allpatients, patientbyid, createPatient, deletePatient, Patient}

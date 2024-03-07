@@ -38,7 +38,11 @@ async function run() {
   });
 
   app.get('/', async function(req, res) {
-    res.sendFile(path.join(_dirname, '/public/views/home.html'));
+    res.sendFile(path.join(_dirname, '/frontpage.html'));
+  });
+
+  app.get('/patientdata', async function (req, res) {
+    res.send(await mod.allpatients());
   });
   
   app.listen(port, function() {

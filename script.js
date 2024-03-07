@@ -55,3 +55,23 @@ fetch("https://jsonplaceholder.typicode.com/users").then(res => res.json()).then
         return{name: patient.name, DOB: patient.id, Sex: patient.username, Bloodtype: patient.email, element: card}
     })
 })
+
+// fetch("http://localhost:3000/patientdata").then(res => res.json()).then(data => {
+//     patients = data.map(patient => {
+//         const card = patientCardTemplate.content.cloneNode(true).children[0]
+//         const name = card.querySelector("[data-name]")
+//         const DOB = card.querySelector("[data-DOB]")
+//         const Sex = card.querySelector("[data-Sex]")
+//         const Bloodtype = card.querySelector("[data-Bloodtype]")
+//         const currentMedication = card.querySelector("[data-Current-Medication]")
+//         //make sure to change the data given to their names, dob, sex, bloodtype, and current meds
+//         name.textContent = 'Name: ' + patient.name
+//         DOB.textContent = 'DOB: ' + patient.id
+//         Sex.textContent = 'Sex: ' + patient.username
+//         Bloodtype.textContent = 'Blood Type: ' + patient.email
+//         currentMedication.textContent = 'Current Medication: ' +
+
+//         patientCardContainer.append(card)
+//         return{name: patient.name, DOB: patient.id, Sex: patient.username, Bloodtype: patient.email, element: card}
+//     })
+// })
