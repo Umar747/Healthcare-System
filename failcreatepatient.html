@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register a Patient</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background-color: #333;
+    padding: 10px 0;
+  }
+  nav {
+    display: flex;
+    justify-content: center;
+  }
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  nav ul li {
+    display: inline;
+    margin-right: 20px;
+  }
+  nav ul li:last-child {
+    margin-right: 0;
+  }
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+  }
+  nav ul li a:hover {
+    text-decoration: underline;
+  }
+  nav ul li a[href="http://localhost:3000/createpatient"],
+  nav ul li a[href="http://localhost:3000/createpatientsuccess"],
+  nav ul li a[href="http://localhost:3000/createpatientfail"] {
+    font-weight: bold;
+  }
+  h1 {
+    text-align: center;
+  }
+  .banner {
+    background-color: #FF0000;
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  input[type="text"], input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+  input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="http://localhost:3000/">Search</a></li>
+      <li><a href="http://localhost:3000/createpatient">Register Patient</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="banner" id="successBanner">Failed to add Patient</div>
+
+<h1>Register a Patient</h1>
+
+<form id="patientForm" onsubmit="submitForm(event)">
+  <label for="name">Name:</label>
+  <input type="text" id="name" required>
+  
+  <label for="dob">Date of Birth:</label>
+  <input type="date" id="dob" required>
+  
+  <label for="address">Address:</label>
+  <input type="text" id="address" required>
+  
+  <label for="ethnicity">Ethnicity:</label>
+  <input type="text" id="ethnicity" required>
+  
+  <label for="bloodtype">Blood Type:</label>
+  <input type="text" id="bloodtype" required>
+  
+  <label for="conditions">Conditions (comma-separated list):</label>
+  <textarea id="conditions" rows="3" required></textarea>
+  
+  <label for="medications">Medications (comma-separated list):</label>
+  <textarea id="medications" rows="3" required></textarea>
+  
+  <input type="submit" value="Register Patient">
+</form>
+
+<script>
+  function submitForm(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const dob = document.getElementById('dob').value;
+    const address = document.getElementById('address').value.trim();
+    const ethnicity = document.getElementById('ethnicity').value.trim();
+    const bloodtype = document.getElementById('bloodtype').value.trim();
+    const conditions = document.getElementById('conditions').value.trim().split(',').map(condition => condition.trim());
+    const medications = document.getElementById('medications').value.trim().split(',').map(medication => medication.trim());
+
+    if (!name || !dob || !address || !ethnicity || !bloodtype || !conditions || !medications) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    const data = {
+      name: name,
+      dob: dob,
+      address: address,
+      ethnicity: ethnicity,
+      bloodtype: bloodtype,
+      conditions: conditions,
+      medications: medications
+    };
+
+    fetch('http://localhost:3000/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (response.ok) {
+        window.location.href = 'http://localhost:3000/createpatientsuccess'; // Redirect to success page
+      } else {
+        window.location.href = 'http://localhost:3000/createpatientfail'; // Redirect to error page
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      window.location.href = 'http://localhost:3000/createpatientfail'; // Redirect to error page
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Data</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+  }
+  .main_body {
+    margin: 0;
+    padding: 30px;
+  }
+  header {
+  background-color: #333;
+  padding: 10px 0; /* Remove padding */
+  width: 100%; /* Make it span the entire width of the page */
+  position: fixed; /* Fix it to the top of the viewport */
+  top: 0; /* Position it at the top */
+  }
+
+  nav {
+    display: flex;
+    justify-content: center; /* Center the nav horizontally */
+    width: 100%; /* Make it span the entire width of the header */
+  }
+
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Make it a flex container */
+    justify-content: center; /* Center the list items horizontally */
+    width: 100%; /* Make it span the entire width of the nav */
+  }
+
+  nav ul li {
+    margin-right: 20px;
+  }
+
+  nav ul li:last-child {
+    margin-right: 0;
+  }
+
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+  }
+
+  nav ul li a:hover {
+    text-decoration: underline;
+  }
+
+  nav ul li a[href="http://localhost:3000/"] {
+    font-weight: bold;
+  }
+  h1 {
+    text-align: center;
+  }
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  .patient-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: 30%;
+    margin-bottom: 20px;
+  }
+  .search-box {
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="http://localhost:3000/">Search</a></li>
+      <li><a href="http://localhost:3000/createpatient">Register Patient</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="main_body">
+
+<h1>Patient Data</h1>
+
+<div class="search-box">
+  <label for="searchId">ID:</label>
+  <input type="text" id="searchId" placeholder="Search by ID..." oninput="filterPatients()">
+</div>
+<div class="search-box">
+  <label for="searchName">Name:</label>
+  <input type="text" id="searchName" placeholder="Search by name..." oninput="filterPatients()">
+</div>
+<div class="search-box">
+  <label for="searchDOB">Date of Birth:</label>
+  <input type="text" id="searchDOB" placeholder="Search by date of birth..." oninput="filterPatients()">
+</div>
+<div class="search-box">
+  <label for="searchAddress">Address:</label>
+  <input type="text" id="searchAddress" placeholder="Search by address..." oninput="filterPatients()">
+</div>
+<div class="search-box">
+  <label for="searchEthnicity">Ethnicity:</label>
+  <input type="text" id="searchEthnicity" placeholder="Search by ethnicity..." oninput="filterPatients()">
+</div>
+<div class="search-box">
+  <label for="searchBloodType">Blood Type:</label>
+  <input type="text" id="searchBloodType" placeholder="Search by blood type..." oninput="filterPatients()">
+</div>
+<div class="search-box">
+  <label for="searchConditions">Conditions:</label>
+  <input type="text" id="searchConditions" placeholder="Search by conditions..." oninput="filterPatients()">
+</div>
+<div class="search-box">
+  <label for="searchMedications">Medications:</label>
+  <input type="text" id="searchMedications" placeholder="Search by medications..." oninput="filterPatients()">
+</div>
+
+<div class="container" id="patientContainer"></div>
+
+</div>
+
+<script>
+  const patientContainer = document.getElementById("patientContainer");
+  const searchId = document.getElementById("searchId");
+  const searchName = document.getElementById("searchName");
+  const searchDOB = document.getElementById("searchDOB");
+  const searchAddress = document.getElementById("searchAddress");
+  const searchEthnicity = document.getElementById("searchEthnicity");
+  const searchBloodType = document.getElementById("searchBloodType");
+  const searchConditions = document.getElementById("searchConditions");
+  const searchMedications = document.getElementById("searchMedications");
+
+  async function fetchData() {
+    try {
+      const response = await fetch("http://localhost:3000/patientdata");
+      const data = await response.json();
+      displayPatients(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  function displayPatients(data) {
+    patientContainer.innerHTML = "";
+    data.forEach(patient => {
+      const patientBox = document.createElement("div");
+      patientBox.classList.add("patient-box");
+      patientBox.innerHTML = `
+        <p><strong>ID:</strong> ${patient.id}</p>
+        <p><strong>Name:</strong> ${patient.name}</p>
+        <p><strong>Date of Birth:</strong> ${new Date(patient.dob).toLocaleDateString()}</p>
+        <p><strong>Address:</strong> ${patient.address}</p>
+        <p><strong>Ethnicity:</strong> ${patient.ethnicity}</p>
+        <p><strong>Blood Type:</strong> ${patient.bloodtype}</p>
+        <p><strong>Conditions:</strong> ${patient.conditions.join(", ")}</p>
+        <p><strong>Medications:</strong> ${patient.medication.join(", ")}</p>
+      `;
+      patientContainer.appendChild(patientBox);
+    });
+  }
+
+  function filterPatients() {
+    const filters = {
+      id: searchId.value.toLowerCase(),
+      name: searchName.value.toLowerCase(),
+      dob: searchDOB.value.toLowerCase(),
+      address: searchAddress.value.toLowerCase(),
+      ethnicity: searchEthnicity.value.toLowerCase(),
+      bloodtype: searchBloodType.value.toLowerCase(),
+      conditions: searchConditions.value.toLowerCase(),
+      medications: searchMedications.value.toLowerCase()
+    };
+    const patientBoxes = document.querySelectorAll(".patient-box");
+    patientBoxes.forEach(box => {
+      const patientId = box.querySelector("p:first-child").textContent.split(":")[1].trim().toLowerCase();
+      let match = true;
+      Object.keys(filters).forEach(key => {
+        if (filters[key] && key !== 'id' && !box.textContent.toLowerCase().includes(filters[key])) {
+          match = false;
+        }
+        if (filters['id'] && !patientId.includes(filters['id'])) {
+          match = false;
+        }
+      });
+      if (match) {
+        box.style.display = "block";
+      } else {
+        box.style.display = "none";
+      }
+    });
+  }
+
+  fetchData();
+</script>
+
+</body>
+</html>

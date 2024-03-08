@@ -108,13 +108,14 @@ async function createPatient(name, dob, address, ethnicity, bloodType, condition
     try {
         try {
             await client.query(`INSERT INTO patients (id, name, dob, address, ethnicity, bloodType, conditions, medication) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7)`, [name, dob, address, ethnicity, bloodType, conditions, medication]); // Create record for user with relevant data
+            return true;
         } finally {
             client.release();
         }
     } catch (err) {
         console.log('Something unknown went wrong with the createPatient function');
         console.log(err.stack);
-        return 'Something unknown went wrong with the createPatient function';
+        return false;
     }
 }
 
@@ -175,18 +176,6 @@ async function allpatients() {
             let res = await client.query('SELECT * FROM patients');
             // console.log(res.rows);
             return res.rows;
-            // let name = res.rows[0].name;
-            // let dob = res.rows[0].dob;
-            // // let dob = String(res.rows[0].dob).substring()// Only want the date, not the time
-            // // console.log(dob)
-            // // console.log(String(dob))
-            // let address = res.rows[0].address;
-            // let ethnicity = res.rows[0].ethnicity;
-            // let bloodType = res.rows[0].bloodtype;
-            // let conditions = res.rows[0].conditions;
-            // let medication = res.rows[0].medication;
-            // let patient = new Patient(id, name, dob, address, ethnicity, bloodType, conditions, medication);
-            // return patient;
         } finally {
             client.release();
         }

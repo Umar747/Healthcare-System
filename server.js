@@ -38,11 +38,33 @@ async function run() {
   });
 
   app.get('/', async function(req, res) {
-    res.sendFile(path.join(_dirname, '/frontpage.html'));
+    res.sendFile(path.join(_dirname, '/frontpage2.html'));
   });
 
   app.get('/patientdata', async function (req, res) {
     res.send(await mod.allpatients());
+  });
+
+  app.get('/createpatient', async function (req, res) {
+    res.sendFile(path.join(_dirname, '/createpatient.html'));
+  });
+
+  app.post('/register', async function (req, res) {
+    console.log(req.body);
+    let create = await mod.createPatient(req.body.name, req.body.dob, req.body.address, req.body.ethnicity, req.body.bloodtype, req.body.conditions, req.body.medications);
+    // if (create == true) {
+    //   res.sendFile(path.join(_dirname, '/successcreatepatient.html'));
+    // } else {
+    //   res.sendFile(path.join(_dirname, '/failcreatepatient.html'));
+    // };
+  });
+
+  app.get('/createpatientsuccess', async function (req, res) {
+    res.sendFile(path.join(_dirname, '/successcreatepatient.html'));
+  });
+
+  app.get('/createpatientfail', async function (req, res) {
+    res.sendFile(path.join(_dirname, '/failcreatepatient.html'));
   });
   
   app.listen(port, function() {

@@ -1,6 +1,6 @@
 CREATE TABLE patients (
     id BIGSERIAL PRIMARY KEY,
-    name VARCHAR UNIQUE NOT NULL,
+    name VARCHAR NOT NULL,
     DOB DATE NOT NULL,
     address VARCHAR NOT NULL,
     ethnicity VARCHAR NOT NULL,
