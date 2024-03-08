@@ -166,14 +166,13 @@
     })
     .then(response => {
       if (response.ok) {
-        window.location.href = 'http://localhost:3000/createpatientsuccess'; // Redirect to success page
+        window.location.href = 'http://localhost:3000/createpatientsuccess';
       } else {
-        window.location.href = 'http://localhost:3000/createpatientfail'; // Redirect to error page
+        window.location.href = 'http://localhost:3000/createpatientfail';
       }
     })
     .catch(error => {
-      console.error('Error:', error);
-      window.location.href = 'http://localhost:3000/createpatientfail'; // Redirect to error page
+      window.location.href = 'http://localhost:3000/createpatientfail';
     });
   }
 </script>

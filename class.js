@@ -1,5 +1,5 @@
 const {Pool} = require('pg');
-const argon2 = require('argon2');
+
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
@@ -33,70 +33,6 @@ class Patient {
             }
         } catch (err) {
             console.log('Something unknown went wrong');
-            console.log(err.stack);
-        }
-    }
-
-    async updateName(name) {
-        const client = await pool.connect();
-        try {
-            try {
-                let res = await client.query('UPDATE patients SET name = $1 WHERE id = $2', [name, this.id])
-                console.table(res.rows)
-                // return res.rows
-            } finally {
-                client.release();
-            }
-        } catch (err) {
-            console.log('Something unknown went wrong with the updateName method');
-            console.log(err.stack);
-        }
-    }
-
-    async updateAddress(address) {
-        const client = await pool.connect();
-        try {
-            try {
-                let res = await client.query('UPDATE patients SET address = $1 WHERE id = $2', [address, this.id])
-                console.table(res.rows)
-                // return res.rows
-            } finally {
-                client.release();
-            }
-        } catch (err) {
-            console.log('Something unknown went wrong with the updateAddress method');
-            console.log(err.stack);
-        }
-    }
-
-    async updateConditions(conditions) {
-        const client = await pool.connect();
-        try {
-            try {
-                let res = await client.query('UPDATE patients SET conditions = $1 WHERE id = $2', [conditions, this.id])
-                console.table(res.rows)
-                // return res.rows
-            } finally {
-                client.release();
-            }
-        } catch (err) {
-            console.log('Something unknown went wrong with the updateConditions method');
-            console.log(err.stack);
-        }
-    }
-
-    async updateMedication(medication) {
-        const client = await pool.connect();
-        try {
-            try {
-                let res = await client.query('UPDATE patients SET conditions = $1 WHERE id = $2', [medication, this.id])
-                console.table(res.rows)
-                // return res.rows
-            } finally {
-                client.release();
-            }
-        } catch (err) {
-            console.log('Something unknown went wrong with the updateMedication method');
             console.log(err.stack);
         }
     }
@@ -141,9 +77,6 @@ async function patientbyid (id) {
                 let res = await client.query('SELECT * FROM patients WHERE id = $1', [id]);
                 let name = res.rows[0].name;
                 let dob = res.rows[0].dob;
-                // let dob = String(res.rows[0].dob).substring()// Only want the date, not the time
-                // console.log(dob)
-                // console.log(String(dob))
                 let address = res.rows[0].address;
                 let ethnicity = res.rows[0].ethnicity;
                 let bloodType = res.rows[0].bloodtype;
@@ -174,7 +107,6 @@ async function allpatients() {
     try {
         try {
             let res = await client.query('SELECT * FROM patients');
-            // console.log(res.rows);
             return res.rows;
         } finally {
             client.release();
@@ -194,10 +126,6 @@ async function run () {
     const client = await pool.connect();
     try {
         try {
-            // createPatient('Anonymous Person', '07/31/2003', '125 Fake Street', 'Caucasian', 'O-', ['Coronavirus'], ['Pfizer']);
-            // let user = await patientbyid(1);
-            // console.log(user);
-            await allpatients();
         } finally {
             client.release();
         }
