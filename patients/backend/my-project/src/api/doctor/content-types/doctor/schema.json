@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "doctors",
+  "info": {
+    "singularName": "doctor",
+    "pluralName": "doctors",
+    "displayName": "Doctor",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string",
+      "required": true
+    },
+    "Address": {
+      "type": "string",
+      "required": true
+    },
+    "Patients": {
+      "type": "string",
+      "required": true
+    },
+    "Experience": {
+      "type": "string",
+      "required": true
+    },
+    "StartTime": {
+      "type": "time",
+      "required": true,
+      "default": "10:00"
+    },
+    "EndTime": {
+      "type": "time",
+      "required": true,
+      "default": "17:00"
+    },
+    "Profile": {
+      "type": "richtext",
+      "required": true,
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sagittis id odio sed maximus. Pellentesque ac turpis ut mi porttitor."
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "doctors"
+    },
+    "ContactDetails": {
+      "type": "string",
+      "required": true
+    },
+    "Premium": {
+      "type": "boolean",
+      "required": true
+    },
+    "Picture": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}
